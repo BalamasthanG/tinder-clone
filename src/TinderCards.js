@@ -1,22 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
 import "./TinderCards.css";
+import database from "./firebase";
 
 function TinderCards() {
-  const [people, setPeople] = useState([
-    {
-      name: "mastan",
-      url: "https://pbs.twimg.com/media/DmgXiMEXgAEbJC8.jpg",
-    },
-    {
-      name: "hameed",
-      url: "https://pbs.twimg.com/media/DNAJVIZX0AA4_iz.jpg",
-    },
-  ]);
+  const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = database
+      .collection("people")
+      .onSnapshot((snapshot) =>
+        setPeople(snapshot.docs.map((doc) => doc.data()))
+      );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <div>
-      <h1>Swipe left and right Tinder cards</h1>
       <div className="tinderCard__container">
         {people.map((person) => (
           <TinderCard
