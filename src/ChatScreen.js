@@ -59,6 +59,7 @@ function ChatScreen() {
           onClick={handleClick}
           className="chatScreen__inputButton"
           type="submit"
+          disabled={!input}
         >
           SEND
         </button>
